@@ -88,9 +88,23 @@ Khi giải quyết bất kỳ lỗi hoặc phát triển tính năng nào, bắt
 ## 7. Nguyên Tắc 2 Môi Trường & Cổng Kiểm Soát Build Parity (Dev vs Prod Parity Gate)
 - **Tách biệt tuyệt đối giữa Development và Production**:
   - Dữ liệu, cấu hình (Environment Variables / UserDefaults / DB / LocalStorage), bundle identifier/tên miền của bản Dev phải độc lập hoàn toàn với bản Production để tránh làm ô nhiễm hoặc mất dữ liệu người dùng thật khi debug.
+- **Nhận diện Thị giác & Bảo vệ Môi trường (Visual Indicator & Update Isolation)**:
+  - Bản Dev bắt buộc phải có dấu hiệu nhận diện trực quan rõ ràng (ví dụ: tiền tố/hậu tố tên `Dev`, badge `DEV`, icon khác màu hoặc banner cảnh báo) để người dùng/tester không bao giờ nhầm lẫn với bản Production.
+  - Bản Dev **bắt buộc phải vô hiệu hóa tính năng Auto-Update** (dùng cờ biên dịch môi trường như `#if DEBUG` hoặc env `NODE_ENV === 'development'`). Tuyệt đối không để bản Dev tự động kiểm tra và tải bản cập nhật Production về ghi đè lên mã nguồn hoặc dữ liệu đang phát triển cục bộ.
+- **Tiêu chuẩn Cập nhật Tự động Âm thầm (Silent Auto-Update Standard)**:
+  - Ứng dụng Production phân phối người dùng cuối nên bật cơ chế kiểm tra định kỳ và **mặc định tải ngầm trong nền (Silent Background Download)** để không ngắt quãng luồng làm việc. Luôn cung cấp toggle trong phần Cài đặt để người dùng có thể chủ động bật/tắt.
 - **Cổng Kiểm Soát Build Parity (Parity Gate)**:
   - Trước khi báo hoàn thành bất kỳ task nào, **bắt buộc phải build thành công 100% trên cả 2 môi trường (Development/Debug và Production/Release)** theo đúng command quy định tại Phần 2.
   - Tuyệt đối không được phép bàn giao khi chỉ một trong hai cấu hình biên dịch/build thành công.
+
+---
+
+## 8. Chuẩn Hóa Tự Động Phát Hành & Phân Phối (Release Automation & Distribution Guard)
+- **Quy trình Phát hành Một Lệnh (Zero-Manual-Touch Release)**:
+  - Toàn bộ các bước phát hành bản mới phải được tự động hóa hoàn toàn bằng script (ví dụ: `./release.sh <version> <build_number>`).
+  - Script phải kiểm soát chặt chẽ theo luồng chuẩn: Kiểm tra môi trường (Preflight) ➔ Bump version ➔ Biên dịch bản tối ưu (Release) ➔ Kiểm thử khói (Smoke Test tự động mở app tối thiểu 3s để xác nhận không crash) ➔ Dọn dẹp dependencies ➔ Ký số bảo mật (Code-signing) ➔ Kiểm duyệt bảo mật (Notarization / Store verification) ➔ Ký số bản cập nhật (EdDSA / Checksum) ➔ Cập nhật kênh phân phối (Appcast / Feed XML) ➔ Commit, tag git và xuất bản Release (GitHub Releases / CDN).
+- **Dọn dẹp Tài nguyên Phụ thuộc Trước khi Đóng gói (Dependency Clean Guard)**:
+  - Trước khi ký số và đóng gói bản phát hành, phải tự động quét và loại bỏ toàn bộ các file rác, file `.zip`, script tạm hoặc helper nhị phân chưa được ký số từ các gói thư viện bên thứ ba (ví dụ: SPM helpers, unnotarized dependency bundles). Tránh tuyệt đối việc bị các hệ thống kiểm duyệt bảo mật (như Apple Notary Service hoặc Windows SmartScreen) từ chối vì file lạ nằm bên trong bundle.
 
 ---
 
