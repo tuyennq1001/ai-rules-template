@@ -14,6 +14,9 @@ curl -sSL https://raw.githubusercontent.com/tuyennq1001/ai-rules-template/main/i
 
 # Hoặc template chuyên biệt cho macOS App (SwiftUI + AppKit + Sparkle 2):
 curl -sSL https://raw.githubusercontent.com/tuyennq1001/ai-rules-template/main/init-agents.sh | bash -s macos
+
+# Hoặc template chuyên biệt cho Chrome Extension (Manifest V3 + Chrome Web Store + GitHub Pages):
+curl -sSL https://raw.githubusercontent.com/tuyennq1001/ai-rules-template/main/init-agents.sh | bash -s chrome-extension
 ```
 
 Hoặc tải trực tiếp file `AGENTS.md`:
@@ -47,6 +50,9 @@ curl -sSL https://raw.githubusercontent.com/tuyennq1001/ai-rules-template/main/A
 
    # Dự án macOS App
    init-agents macos
+
+   # Dự án Chrome Extension (Manifest V3)
+   init-agents chrome-extension
    ```
 
 ---
@@ -81,6 +87,15 @@ Kho lưu trữ cung cấp sẵn bộ khung chuẩn mực cho phát triển và t
 - **`templates/macos/release.sh`**: Script tự động phát hành 9 bước hoàn chỉnh: Build Release ➔ Smoke test ➔ Dọn dẹp SPM helper zips ➔ Ký số Developer ID ➔ Apple Notarization (`GOX_NOTARY` / `notarytool`) & Stapling ➔ Sparkle EdDSA sign ➔ Cập nhật `appcast.xml` ➔ Git Tag & GitHub Release.
 - **`templates/macos/release-notes/template.html`**: Mẫu ghi chú phát hành HTML chuẩn Sparkle.
 - **`templates/macos/appcast.xml`**: Mẫu feed ban đầu cho Sparkle 2.
+
+---
+
+## 🌐 Bộ Mẫu Chuyên Biệt Cho Chrome Extension (`templates/chrome-extension`)
+
+Kho lưu trữ cung cấp sẵn bộ khung phát triển, đóng gói, triển khai GitHub Pages và phát hành Chrome Extension (Manifest V3) lên Chrome Web Store:
+- **`templates/chrome-extension/AGENTS.chrome-extension.md`**: Bộ quy tắc đầy đủ cho Chrome Extension MV3 (tối giản `permissions`, Zero Remote Code, quy chuẩn popup Dark/Light & About, triển khai website & Privacy Policy `#privacy` trên GitHub Pages `/docs`, bảng thông số bộ ảnh `128×128 RGBA` và `1280×800` / `440×280` / `1400×560` 24-bit `RGB` không alpha, khai báo Privacy Practices).
+- **`templates/chrome-extension/package.sh`**: Script kiểm tra `manifest.json` (MV3 & `description` ≤ 132 ký tự), chạy unit test, đóng gói file `.zip` sạch vào `store-assets/`, kiểm tra toàn vẹn `unzip -t` và kiểm tra kích thước/kênh màu ảnh PNG.
+- **`templates/chrome-extension/STORE_SUBMISSION.template.md`**: Mẫu checklist & nội dung copy-paste chuẩn bị sẵn để điền Chrome Web Store Developer Dashboard.
 
 ---
 
