@@ -19,6 +19,9 @@ BASE_URL="https://raw.githubusercontent.com/tuyennq1001/ai-rules-template/main"
 if [ "$TEMPLATE" = "macos" ]; then
     URL="${BASE_URL}/templates/macos/AGENTS.macos.md"
     echo "📥 Đang tải template AGENTS.md chuyên biệt cho macOS App (SwiftUI / AppKit)..."
+elif [ "$TEMPLATE" = "chrome-extension" ] || [ "$TEMPLATE" = "chrome" ] || [ "$TEMPLATE" = "extension" ]; then
+    URL="${BASE_URL}/templates/chrome-extension/AGENTS.chrome-extension.md"
+    echo "📥 Đang tải template AGENTS.md chuyên biệt cho Chrome Extension (Manifest V3)..."
 else
     URL="${BASE_URL}/AGENTS.md"
     echo "📥 Đang tải template AGENTS.md chuẩn Universal..."
